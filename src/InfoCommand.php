@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
@@ -14,25 +16,24 @@ class InfoCommand
     /**
      * Current version
      */
-    const CURRENT_VERSION = 'current_version';
+    public const CURRENT_VERSION = 'current_version';
 
-    const VERSIONS = 'versions';
+    public const VERSIONS = 'versions';
 
     /**
      * Available versions
      */
-    const AVAILABLE_VERSIONS = 'available_versions';
+    public const AVAILABLE_VERSIONS = 'available_versions';
 
     /**
      *  Package name
      */
-    const NAME = 'name';
+    public const NAME = 'name';
 
     /**
      * New versions
      */
-    const NEW_VERSIONS = 'new_versions';
-
+    public const NEW_VERSIONS = 'new_versions';
 
     protected \Magento\Composer\MagentoComposerApplication $magentoComposerApplication;
 

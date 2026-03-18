@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-use Magento\Composer\MagentoComposerApplication;
 use Magento\Composer\InfoCommand;
+use Magento\Composer\MagentoComposerApplication;
 use Magento\Composer\RequireUpdateDryRunCommand;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -59,8 +61,8 @@ Read <https://getcomposer.org/doc/articles/troubleshooting.md> for further commo
         'current_version' => '1.0.0',
         'available_versions' => [
             '1.1.0',
-            '1.2.0'
-        ]
+            '1.2.0',
+        ],
     ];
 
     protected function setUp(): void

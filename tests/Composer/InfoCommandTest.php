@@ -1,17 +1,18 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-use Magento\Composer\MagentoComposerApplication;
 use Magento\Composer\InfoCommand;
+use Magento\Composer\MagentoComposerApplication;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class InfoCommandTest extends \PHPUnit\Framework\TestCase
 {
-
     private $installedOutput = 'name     : 3rdp/a
 descrip. : Plugin project A
 keywords :
@@ -65,7 +66,7 @@ php >=5.4.11
                 'names' => '3rdp/a',
                 'current_version' => '1.0.0',
                 'available_versions' => [],
-                'new_versions' => []
+                'new_versions' => [],
             ],
             $result
         );
@@ -100,13 +101,13 @@ php >=5.4.11
                     'current_version' => '',
                     'available_versions' => [
                         '1.0.0',
-                        '1.1.0'
+                        '1.1.0',
                     ],
                     'new_versions' => [
                         '1.0.0',
-                        '1.1.0'
-                    ]
-                ]
+                        '1.1.0',
+                    ],
+                ],
             ],
             'Package installed' => [
                 'name     : 3rdp/a
@@ -130,12 +131,12 @@ php >=5.4.11
                     'available_versions' => [
                         '1.0.0',
                         '1.1.0',
-                        '1.2.0'
+                        '1.2.0',
                     ],
                     'new_versions' => [
-                        '1.2.0'
-                    ]
-                ]
+                        '1.2.0',
+                    ],
+                ],
             ],
         ];
     }

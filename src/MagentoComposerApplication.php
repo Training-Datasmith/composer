@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
@@ -7,8 +9,8 @@
 namespace Magento\Composer;
 
 use Composer\Console\Application;
-use Composer\IO\BufferIO;
 use Composer\Factory as ComposerFactory;
+use Composer\IO\BufferIO;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
@@ -19,8 +21,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 class MagentoComposerApplication
 {
-
-    const COMPOSER_WORKING_DIR = '--working-dir';
+    public const COMPOSER_WORKING_DIR = '--working-dir';
 
     /**
      * Path to composer.json file

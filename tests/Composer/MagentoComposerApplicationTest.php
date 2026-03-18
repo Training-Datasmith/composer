@@ -1,12 +1,14 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
 use Composer\Console\Application;
-use Magento\Composer\MagentoComposerApplication;
 use Magento\Composer\ConsoleArrayInputFactory;
+use Magento\Composer\MagentoComposerApplication;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -48,16 +50,16 @@ class MagentoComposerApplicationTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    function testWrongExitCode()
+    public function testWrongExitCode()
     {
         $this->composerApplication->expects($this->once())->method('run')->willReturn(1);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Command "update" failed');
 
-        $this->application->runComposerCommand(['command'=>'update']);
+        $this->application->runComposerCommand(['command' => 'update']);
     }
 
-    function testRunCommand()
+    public function testRunCommand()
     {
         $inputData = ['command' => 'update', MagentoComposerApplication::COMPOSER_WORKING_DIR => '.'];
 
