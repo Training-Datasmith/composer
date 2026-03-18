@@ -23,13 +23,6 @@ class MagentoComposerApplication
     const COMPOSER_WORKING_DIR = '--working-dir';
 
     /**
-     * Path to Composer home directory
-     *
-     * @var string
-     */
-    private $composerHome;
-
-    /**
      * Path to composer.json file
      *
      * @var string
@@ -38,15 +31,10 @@ class MagentoComposerApplication
 
     /**
      * Buffered output
-     *
-     * @var BufferedOutput
      */
-    private $consoleOutput;
+    private \Symfony\Component\Console\Output\BufferedOutput $consoleOutput;
 
-    /**
-     * @var ConsoleArrayInputFactory
-     */
-    private $consoleArrayInputFactory;
+    private \Magento\Composer\ConsoleArrayInputFactory $consoleArrayInputFactory;
 
     /**
      * @var Application
@@ -56,26 +44,23 @@ class MagentoComposerApplication
     /**
      * Constructs class
      *
-     * @param string $pathToComposerHome
      * @param string $pathToComposerJson
      * @param Application $consoleApplication
      * @param ConsoleArrayInputFactory $consoleArrayInputFactory
      * @param BufferedOutput $consoleOutput
      */
     public function __construct(
-        $pathToComposerHome,
+        string $pathToComposerHome,
         $pathToComposerJson,
         ?Application $consoleApplication = null,
         ?ConsoleArrayInputFactory $consoleArrayInputFactory = null,
         ?BufferedOutput $consoleOutput = null
     ) {
-        $this->consoleApplication = $consoleApplication ? $consoleApplication : new Application();
-        $this->consoleArrayInputFactory = $consoleArrayInputFactory ? $consoleArrayInputFactory
-            : new ConsoleArrayInputFactory();
-        $this->consoleOutput = $consoleOutput ? $consoleOutput : new BufferedOutput();
+        $this->consoleApplication = $consoleApplication ?: new Application();
+        $this->consoleArrayInputFactory = $consoleArrayInputFactory ?: new ConsoleArrayInputFactory();
+        $this->consoleOutput = $consoleOutput ?: new BufferedOutput();
 
         $this->composerJson = $pathToComposerJson;
-        $this->composerHome = $pathToComposerHome;
 
         putenv('COMPOSER_HOME=' . $pathToComposerHome);
 
@@ -96,12 +81,10 @@ class MagentoComposerApplication
     /**
      * Runs composer command
      *
-     * @param array $commandParams
      * @param string|null $workingDir
-     * @return bool
      * @throws \RuntimeException
      */
-    public function runComposerCommand(array $commandParams, $workingDir = null)
+    public function runComposerCommand(array $commandParams, $workingDir = null): string
     {
         $this->consoleApplication->resetComposer();
 

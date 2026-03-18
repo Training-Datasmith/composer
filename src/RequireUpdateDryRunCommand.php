@@ -11,21 +11,12 @@ namespace Magento\Composer;
  */
 class RequireUpdateDryRunCommand
 {
-    /**
-     * @var MagentoComposerApplication
-     */
-    protected $magentoComposerApplication;
+    protected \Magento\Composer\MagentoComposerApplication $magentoComposerApplication;
 
-    /**
-     * @var InfoCommand
-     */
-    protected $infoCommand;
+    protected \Magento\Composer\InfoCommand $infoCommand;
 
     /**
      * Constructor
-     *
-     * @param MagentoComposerApplication $magentoComposerApplication
-     * @param InfoCommand $infoCommand
      */
     public function __construct(
         MagentoComposerApplication $magentoComposerApplication,
@@ -60,9 +51,8 @@ class RequireUpdateDryRunCommand
             $errorMessage = $this->generateAdditionalErrorMessage($e->getMessage(), $packages);
             if ($errorMessage) {
                 throw new \RuntimeException($errorMessage, $e->getCode(), $e);
-            } else {
-                throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
             }
+            throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
 
         }
 
@@ -138,9 +128,8 @@ class RequireUpdateDryRunCommand
      * Returns array that contains package as key and version as value
      *
      * @param array $packages
-     * @return array
      */
-    protected function explodePackagesAndVersions($packages)
+    protected function explodePackagesAndVersions($packages): array
     {
         $packagesAndVersions = [];
         foreach ($packages as $package) {

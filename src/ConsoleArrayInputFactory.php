@@ -15,11 +15,8 @@ class ConsoleArrayInputFactory
 {
     /**
      * Create arrayInput instance.
-     *
-     * @param array $params
-     * @return ArrayInput
      */
-    public function create(array $params)
+    public function create(array $params): \Symfony\Component\Console\Input\ArrayInput
     {
         return new ArrayInput($params);
     }

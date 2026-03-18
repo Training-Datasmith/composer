@@ -34,15 +34,10 @@ class InfoCommand
     const NEW_VERSIONS = 'new_versions';
 
 
-    /**
-     * @var MagentoComposerApplication
-     */
-    protected $magentoComposerApplication;
+    protected \Magento\Composer\MagentoComposerApplication $magentoComposerApplication;
 
     /**
      * Constructor
-     *
-     * @param MagentoComposerApplication $magentoComposerApplication
      */
     public function __construct(MagentoComposerApplication $magentoComposerApplication)
     {
@@ -93,11 +88,8 @@ class InfoCommand
 
     /**
      * Extracts package versions info
-     *
-     * @param array $packageInfo
-     * @return array
      */
-    private function extractVersions($packageInfo)
+    private function extractVersions(array $packageInfo): array
     {
         $versions = explode(', ', $packageInfo[self::VERSIONS]);
         $packageInfo[self::NEW_VERSIONS] = [];
