@@ -1,50 +1,42 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 namespace Magento\Composer;
 
 /**
  * Class InfoCommand calls composer info command
  */
-class InfoCommand
+class Info_Command
 {
     /**
      * Current version
      */
     public const CURRENT_VERSION = 'current_version';
-
     public const VERSIONS = 'versions';
-
     /**
      * Available versions
      */
     public const AVAILABLE_VERSIONS = 'available_versions';
-
     /**
      *  Package name
      */
     public const NAME = 'name';
-
     /**
      * New versions
      */
     public const NEW_VERSIONS = 'new_versions';
-
-    protected \Magento\Composer\MagentoComposerApplication $magentoComposerApplication;
-
+    protected \Magento\Composer\Magento_Composer_Application $magento_composer_application;
     /**
      * Constructor
      */
-    public function __construct(MagentoComposerApplication $magentoComposerApplication)
+    public function __construct(Magento_Composer_Application $magento_composer_application)
     {
-        $this->magentoComposerApplication = $magentoComposerApplication;
+        $this->magento_composer_application = $magento_composer_application;
     }
-
     /**
      * Runs composer info command
      *
@@ -54,73 +46,57 @@ class InfoCommand
      */
     public function run($package, $installed = false)
     {
-        $showAllPackages = !$installed;
-        $commandParameters = [
-            'command' => 'info',
-            'package' => $package,
-            '-i' => $installed,
-            '--all' => $showAllPackages,
-        ];
-
+        $show_all_packages = !$installed;
+        $command_parameters = ['command' => 'info', 'package' => $package, '-i' => $installed, '--all' => $show_all_packages];
         try {
-            $output = $this->magentoComposerApplication->runComposerCommand($commandParameters);
+            $output = $this->magento_composer_application->run_composer_command($command_parameters);
         } catch (\RuntimeException $e) {
             return false;
         }
-
-        $rawLines = explode("\n", str_replace("\r\n", "\n", $output));
+        $raw_lines = explode("\n", str_replace("\r\n", "\n", $output));
         $result = [];
-
-        foreach ($rawLines as $line) {
+        foreach ($raw_lines as $line) {
             $chunk = explode(':', $line);
             if (count($chunk) === 2) {
                 $result[trim($chunk[0])] = trim($chunk[1]);
             }
         }
-
-        $result = $this->extractVersions($result);
-
+        $result = $this->extract_versions($result);
         if (!isset($result[self::NAME]) && isset($result[self::CURRENT_VERSION])) {
             $result[self::NAME] = $package;
         }
-
         return $result;
     }
-
     /**
      * Extracts package versions info
      */
-    private function extractVersions(array $packageInfo): array
+    private function extract_versions(array $package_info): array
     {
-        $versions = explode(', ', $packageInfo[self::VERSIONS]);
-        $packageInfo[self::NEW_VERSIONS] = [];
-        $packageInfo[self::AVAILABLE_VERSIONS] = [];
-
+        $versions = explode(', ', $package_info[self::VERSIONS]);
+        $package_info[self::NEW_VERSIONS] = [];
+        $package_info[self::AVAILABLE_VERSIONS] = [];
         if (count($versions) === 1) {
-            $packageInfo[self::CURRENT_VERSION] = str_replace('* ', '', $packageInfo[self::VERSIONS]);
+            $package_info[self::CURRENT_VERSION] = str_replace('* ', '', $package_info[self::VERSIONS]);
         } else {
-            $currentVersion = array_values(preg_grep("/^\*.*/", $versions));
-            if ($currentVersion) {
-                $packageInfo[self::CURRENT_VERSION] = str_replace('* ', '', $currentVersion[0]);
+            $current_version = array_values(preg_grep("/^\\*.*/", $versions));
+            if ($current_version) {
+                $package_info[self::CURRENT_VERSION] = str_replace('* ', '', $current_version[0]);
             } else {
-                $packageInfo[self::CURRENT_VERSION] = '';
+                $package_info[self::CURRENT_VERSION] = '';
             }
-
-            $packageInfo[self::AVAILABLE_VERSIONS] = array_values(preg_grep("/^\*.*/", $versions, PREG_GREP_INVERT));
+            $package_info[self::AVAILABLE_VERSIONS] = array_values(preg_grep("/^\\*.*/", $versions, PREG_GREP_INVERT));
         }
-
-        if (count($packageInfo[self::AVAILABLE_VERSIONS]) > 0) {
-            if ($packageInfo[self::CURRENT_VERSION]) {
-                foreach ($packageInfo[self::AVAILABLE_VERSIONS] as $version) {
-                    if (version_compare($packageInfo[self::CURRENT_VERSION], $version, '<')) {
-                        $packageInfo[self::NEW_VERSIONS][] = $version;
+        if (count($package_info[self::AVAILABLE_VERSIONS]) > 0) {
+            if ($package_info[self::CURRENT_VERSION]) {
+                foreach ($package_info[self::AVAILABLE_VERSIONS] as $version) {
+                    if (version_compare($package_info[self::CURRENT_VERSION], $version, '<')) {
+                        $package_info[self::NEW_VERSIONS][] = $version;
                     }
                 }
             } else {
-                $packageInfo[self::NEW_VERSIONS] = $packageInfo[self::AVAILABLE_VERSIONS];
+                $package_info[self::NEW_VERSIONS] = $package_info[self::AVAILABLE_VERSIONS];
             }
         }
-
-        return $packageInfo;
+        return $package_info;
     }
 }
